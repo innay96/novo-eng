@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>מחשבון חתך כבלים | SI 900</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a; --border: #2e3347;
+    --accent: #3b82f6; --accent2: #6366f1; --green: #10b981; --red: #ef4444;
+    --amber: #f59e0b; --text: #e2e8f0; --muted: #64748b; --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px 16px; }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: -1;
+    background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .wrapper { max-width: 1040px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 24px; animation: fadeDown 0.6s ease; }
+  .logo-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px; }
+  .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 30px rgba(99,102,241,0.4); }
+  h1 { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.5px; background: linear-gradient(135deg, #e2e8f0, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: var(--muted); font-size: 0.82rem; font-weight: 400; letter-spacing: 0.5px; }
+
+  /* Mode toggle */
+  .mode-toggle { display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; gap: 4px; width: fit-content; margin: 0 auto 28px; }
+  .mode-btn { padding: 9px 24px; border: none; border-radius: 7px; font-family: 'Heebo', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--muted); background: transparent; }
+  .mode-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; box-shadow: 0 2px 10px rgba(99,102,241,0.4); }
+  .mode-btn:not(.active):hover { color: var(--text); background: var(--border); }
+
+  .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } h1 { font-size: 1.4rem; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; animation: fadeUp 0.5s ease both; transition: border-color 0.2s; }
+  .card:hover { border-color: #3e4461; }
+  .card-header { padding: 10px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.4px; color: #94a3b8; text-transform: uppercase; }
+  .card-header .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .card-body { padding: 16px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .full { grid-column: 1/-1; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 0.73rem; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; text-transform: uppercase; }
+  input, select { padding: 9px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-family: 'Heebo', sans-serif; font-size: 0.88rem; transition: border-color 0.15s, box-shadow 0.15s; width: 100%; }
+  input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+  select option { background: #1a1d27; }
+  .ib-display { padding: 9px 12px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 7px; font-weight: 800; font-size: 1rem; color: var(--accent); letter-spacing: 0.5px; }
+  .check-row { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: 0.84rem; font-weight: 500; color: var(--text); }
+  input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+  .hint { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  .calc-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; border-radius: var(--radius); color: white; font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: 0.3px; box-shadow: 0 4px 20px rgba(99,102,241,0.35); transition: transform 0.1s, box-shadow 0.2s; }
+  .calc-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(99,102,241,0.5); }
+  .calc-btn:active { transform: translateY(0); }
+
+  .result-banner { border-radius: var(--radius); padding: 20px; margin-bottom: 16px; border: 1px solid; animation: fadeUp 0.4s ease; }
+  .result-banner.pass { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.4); }
+  .result-banner.fail { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.4); }
+  .result-title { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+  .result-title.pass { color: var(--green); }
+  .result-title.fail { color: var(--red); }
+  .result-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); }
+
+  .rtable { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .rtable td { padding: 5px 8px; border-bottom: 1px solid var(--border); }
+  .rtable td:first-child { color: var(--muted); }
+  .rtable td:last-child { font-family: 'Courier New', monospace; text-align: left; font-weight: 600; color: var(--text); }
+  .rtable tr.highlight td { color: var(--accent); }
+  .check-pass td { background: rgba(16,185,129,0.06); }
+  .check-fail td { background: rgba(239,68,68,0.06); }
+
+  .badge { display: inline-block; margin-top: 10px; padding: 3px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px; }
+  .badge.pass { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+  .badge.fail { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+  .empty { text-align: center; padding: 60px 20px; background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); color: var(--muted); animation: fadeUp 0.5s ease; }
+  .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px);  } to { opacity: 1; transform: translateY(0); } }
+  .results-col > *:nth-child(2) { animation-delay: 0.07s; }
+  .results-col > *:nth-child(3) { animation-delay: 0.14s; }
+  .results-col > *:nth-child(4) { animation-delay: 0.21s; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="logo-row">
+      <div class="logo-icon">🔌</div>
+      <h1>מחשבון חתך כבלים</h1>
+    </div>
+    <p class="subtitle">SI 900 &nbsp;/&nbsp; IEC 60364-5-52 &nbsp;·&nbsp; נחושת ואלומיניום &nbsp;·&nbsp; LV</p>
+  </header>
+
+  <!-- Mode toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="btnRecommend" onclick="setMode('recommend')">🎯 המלצת חתך אוטומטית</button>
+    <button class="mode-btn" id="btnCheck" onclick="setMode('check')">🔍 בדיקת חתך ידנית</button>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT FORMS -->
+    <div class="forms-col">
+
+      <!-- Load -->
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#3b82f6"></div> נתוני עומס</div>
+        <div class="card-body">
+          <div class="grid">
+            <div class="field">
+              <label>סוג מערכת</label>
+              <select id="systemType" onchange="syncVoltage()">
+                <option value="THREE_PHASE">תלת-פאזי 400V</option>
+                <option value="SINGLE_PHASE">חד-פאזי 230V</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>סוג עומס</label>
+              <select id="loadType">
+                <option value="POWER">כוח (מקס׳ 5%)</option>
+                <option value="LIGHTING">תאורה (מקס׳ 3%)</option>
+                <option value="MOTOR_START">מנוע - הפעלה (מקס׳ 15%)</option>
+                <option value="SENSITIVE_EQUIPMENT">ציוד רגיש (מקס׳ 2%)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>הספק פעיל (W)</label>
+              <input type="number" id="power" value="5000" min="1" oninput="updateIB()"/>
+            </div>
+            <div class="field">
+              <label>גורם הספק cos φ</label>
+              <input type="number" id="pf" value="0.9" step="0.01" min="0.1" max="1" oninput="updateIB()"/>
+            </div>
+            <div class="field">
+              <label>נצילות η</label>
+              <input type="number" id="eff" value="1.0" step="0.01" min="0.5" max="1" oninput="updateIB()"/>
+            </div>
+            <div class="field">
+              <label>מתח (V)</label>
+              <input type="number" id="voltage" value="400" oninput="updateIB()"/>
+            </div>
+            <div class="field full">
+              <label>זרם עיצוב IB (מחושב)</label>
+              <div class="ib-display" id="ibDisplay">— A</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cable -->
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#8b5cf6"></div> נתוני כבל</div>
+        <div class="card-body">
+          <div class="grid">
+            <div class="field">
+              <label>חומר מוליך</label>
+              <select id="material">
+                <option value="COPPER">נחושת (Cu)</option>
+                <option value="ALUMINUM">אלומיניום (Al)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>סוג בידוד</label>
+              <select id="insulation">
+                <option value="PVC">PVC — 70°C</option>
+                <option value="XLPE">XLPE — 90°C</option>
+              </select>
+            </div>
+            <!-- Manual mode: section selector -->
+            <div class="field full" id="sectionField" style="display:none">
+              <label>חתך לבדיקה (mm²)</label>
+              <select id="manualSection">
+                <option>1.5</option><option>2.5</option><option>4</option>
+                <option>6</option><option>10</option><option value="16" selected>16</option>
+                <option>25</option><option>35</option><option>50</option>
+                <option>70</option><option>95</option><option>120</option>
+                <option>150</option><option>185</option><option>240</option><option>300</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>אורך כבל (מ׳)</label>
+              <input type="number" id="length" value="30" min="1"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Installation -->
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#10b981"></div> תנאי התקנה</div>
+        <div class="card-body">
+          <div class="grid">
+            <div class="field full">
+              <label>שיטת התקנה (IEC 60364-5-52)</label>
+              <select id="method">
+                <option value="B1">B1 — בתוך צינור על/בתוך קיר</option>
+                <option value="B2">B2 — כבל בתוך צינור על קיר</option>
+                <option value="C">C — על גבי קיר / תקרה</option>
+                <option value="D1">D1 — בקרקע (בצינור)</option>
+                <option value="D2">D2 — בקרקע (ישיר)</option>
+                <option value="E">E — באוויר חופשי</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>טמפרטורת סביבה (°C)</label>
+              <input type="number" id="ambientTemp" value="35" min="-10" max="70"/>
+            </div>
+            <div class="field">
+              <label>מספר מעגלים מקובצים</label>
+              <select id="groupCount">
+                <option value="1">1 — ללא קיבוץ</option>
+                <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                <option value="5">5</option><option value="6">6</option><option value="7">7</option>
+                <option value="8">8</option><option value="9">9</option><option value="12">12</option>
+                <option value="16">16</option><option value="20">20</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breaker -->
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#f59e0b"></div> מבטח / הגנת יתר-זרם</div>
+        <div class="card-body">
+          <label class="check-row" style="margin-bottom:12px">
+            <input type="checkbox" id="autoBreaker" checked onchange="toggleBreaker()"/>
+            בחירה אוטומטית — הקטן ביותר שעומד בתנאים
+          </label>
+          <div id="breakerManual" style="display:none">
+            <div class="field">
+              <label>זרם נקוב In (A)</label>
+              <select id="breakerIn">
+                <option>6</option><option>10</option><option>13</option><option value="16" selected>16</option>
+                <option>20</option><option>25</option><option>32</option><option>40</option>
+                <option>50</option><option>63</option><option>80</option><option>100</option>
+                <option>125</option><option>160</option><option>200</option><option>250</option>
+                <option>315</option><option>400</option><option>500</option><option>630</option>
+              </select>
+            </div>
+          </div>
+          <p class="hint">IB ≤ In ≤ Iz &nbsp;&amp;&amp;&nbsp; I₂ ≤ 1.45 × Iz &nbsp;&nbsp;(IEC 60364-4-43)</p>
+        </div>
+      </div>
+
+      <button class="calc-btn" id="calcBtn" onclick="calculate()">🎯 חשב המלצת חתך</button>
+    </div>
+
+    <!-- RIGHT RESULTS -->
+    <div class="results-col" id="resultsCol">
+      <div class="empty">
+        <div class="empty-icon">🔍</div>
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px">ממתין לחישוב</div>
+        <div style="font-size:0.82rem">מלא את הנתונים ולחץ חשב</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TABLES ───────────────────────────────────────────────────────────────────
+const COPPER_PVC={1.5:{B1:15,B2:13,C:17,D1:18,D2:21,E:19},2.5:{B1:21,B2:18,C:23,D1:24,D2:27,E:26},4:{B1:28,B2:24,C:31,D1:32,D2:36,E:35},6:{B1:36,B2:31,C:40,D1:41,D2:46,E:45},10:{B1:50,B2:42,C:54,D1:57,D2:63,E:61},16:{B1:68,B2:56,C:73,D1:76,D2:85,E:81},25:{B1:89,B2:73,C:95,D1:101,D2:112,E:106},35:{B1:110,B2:89,C:117,D1:125,D2:138,E:131},50:{B1:134,B2:108,C:141,D1:151,D2:168,E:158},70:{B1:171,B2:136,C:179,D1:192,D2:213,E:200},95:{B1:207,B2:164,C:216,D1:232,D2:258,E:241},120:{B1:239,B2:188,C:249,D1:269,D2:299,E:278},150:{B1:275,B2:216,C:285,D1:309,D2:344,E:318},185:{B1:314,B2:245,C:324,D1:353,D2:392,E:362},240:{B1:370,B2:286,C:380,D1:415,D2:461,E:424},300:{B1:424,B2:328,C:435,D1:477,D2:530,E:486}};
+const COPPER_XLPE={1.5:{B1:19,B2:17,C:22,D1:22,D2:26,E:23},2.5:{B1:26,B2:23,C:30,D1:30,D2:35,E:31},4:{B1:35,B2:31,C:40,D1:40,D2:47,E:42},6:{B1:45,B2:40,C:51,D1:52,D2:60,E:54},10:{B1:61,B2:54,C:70,D1:71,D2:83,E:73},16:{B1:83,B2:73,C:94,D1:96,D2:112,E:98},25:{B1:110,B2:95,C:119,D1:125,D2:145,E:130},35:{B1:137,B2:117,C:148,D1:155,D2:180,E:162},50:{B1:167,B2:141,C:180,D1:188,D2:219,E:197},70:{B1:213,B2:179,C:232,D1:240,D2:281,E:251},95:{B1:258,B2:216,C:282,D1:291,D2:341,E:304},120:{B1:299,B2:249,C:328,D1:338,D2:396,E:352},150:{B1:344,B2:285,C:379,D1:388,D2:456,E:406},185:{B1:392,B2:324,C:434,D1:443,D2:521,E:463},240:{B1:461,B2:380,C:514,D1:523,D2:615,E:546},300:{B1:530,B2:435,C:593,D1:603,D2:709,E:629}};
+const ALUM_PVC={10:{B1:38,B2:32,C:42,D1:44,D2:49,E:47},16:{B1:53,B2:43,C:57,D1:59,D2:66,E:63},25:{B1:70,B2:57,C:74,D1:79,D2:87,E:83},35:{B1:86,B2:70,C:91,D1:97,D2:108,E:103},50:{B1:104,B2:84,C:110,D1:118,D2:131,E:123},70:{B1:133,B2:107,C:140,D1:150,D2:167,E:156},95:{B1:161,B2:129,C:170,D1:181,D2:202,E:188},120:{B1:186,B2:149,C:197,D1:210,D2:235,E:218},150:{B1:213,B2:170,C:226,D1:240,D2:269,E:250},185:{B1:244,B2:194,C:256,D1:274,D2:309,E:285},240:{B1:287,B2:227,C:300,D1:323,D2:364,E:334},300:{B1:330,B2:261,C:344,D1:371,D2:419,E:384}};
+const ALUM_XLPE={10:{B1:48,B2:42,C:55,D1:55,D2:65,E:57},16:{B1:64,B2:56,C:73,D1:74,D2:87,E:76},25:{B1:85,B2:73,C:93,D1:97,D2:113,E:101},35:{B1:105,B2:90,C:116,D1:120,D2:140,E:125},50:{B1:128,B2:110,C:140,D1:147,D2:171,E:153},70:{B1:163,B2:140,C:179,D1:187,D2:219,E:196},95:{B1:198,B2:170,C:220,D1:227,D2:267,E:238},120:{B1:229,B2:197,C:255,D1:263,D2:310,E:276},150:{B1:263,B2:226,C:295,D1:302,D2:356,E:319},185:{B1:301,B2:256,C:339,D1:346,D2:408,E:364},240:{B1:354,B2:300,C:400,D1:409,D2:483,E:430},300:{B1:407,B2:344,C:460,D1:471,D2:556,E:497}};
+
+const TEMP_CF={PVC:{25:1.06,30:1.00,35:0.94,40:0.87,45:0.79,50:0.71},XLPE:{25:1.04,30:1.00,35:0.96,40:0.91,45:0.87,50:0.82}};
+const GROUP_CF={1:1,2:0.8,3:0.7,4:0.65,5:0.6,6:0.57,7:0.54,8:0.52,9:0.5,12:0.45,16:0.41,20:0.38};
+const VD_LIMITS={POWER:5,LIGHTING:3,MOTOR_START:15,SENSITIVE_EQUIPMENT:2};
+const RESISTIVITY={COPPER:0.01724,ALUMINUM:0.02826};
+const TEMP_ALPHA={COPPER:0.00393,ALUMINUM:0.00403};
+const SECTIONS=[1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300];
+const BREAKER_RATINGS=[6,10,13,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630];
+
+let currentMode = 'recommend';
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+const g = id => document.getElementById(id);
+function getTable(mat,ins){return mat==='COPPER'?(ins==='PVC'?COPPER_PVC:COPPER_XLPE):(ins==='PVC'?ALUM_PVC:ALUM_XLPE);}
+function tempCF(ins,t){const tbl=TEMP_CF[ins]||TEMP_CF.PVC;const keys=Object.keys(tbl).map(Number).sort((a,b)=>a-b);return tbl[keys.reduce((p,c)=>Math.abs(c-t)<Math.abs(p-t)?c:p)];}
+function groupCF(n){const keys=Object.keys(GROUP_CF).map(Number).sort((a,b)=>a-b);return GROUP_CF[keys.find(k=>k>=n)||20];}
+function calcIB(P,pf,eff,V,sys){const S=(P/pf)/eff;return sys==='SINGLE_PHASE'?S/V:S/(Math.sqrt(3)*V);}
+function calcVD(section,len,mat,ins,IB,pf,V,sys){
+  const maxT=ins==='PVC'?70:90;
+  const r20=RESISTIVITY[mat]/section*1000;
+  const rOp=r20*(1+TEMP_ALPHA[mat]*(maxT-20));
+  const rM=rOp/1000,xM=0.08/1000,sinPhi=Math.sqrt(1-pf*pf);
+  const k=sys==='SINGLE_PHASE'?2:Math.sqrt(3);
+  const dU=k*IB*len*(rM*pf+xM*sinPhi);
+  return {dU,pct:(dU/V)*100};
+}
+function recBreaker(IB,Iz){for(const In of BREAKER_RATINGS){if(In>=IB&&In<=Iz&&In*1.45<=1.45*Iz)return In;}return null;}
+
+function calcForSection(section, mat, ins, len, method, ambT, grp, P, pf, eff, V, sys, loadType, manualIn){
+  const Iz_t = getTable(mat,ins)[section]?.[method];
+  if(!Iz_t) return null;
+  const IB=calcIB(P,pf,eff,V,sys);
+  const Ct=tempCF(ins,ambT), Cg=groupCF(grp), CF=Ct*Cg;
+  const Iz=Iz_t*CF;
+  const {dU,pct}=calcVD(section,len,mat,ins,IB,pf,V,sys);
+  const maxVD=VD_LIMITS[loadType]||5;
+  const curOk=Iz>=IB, vdOk=pct<=maxVD;
+  const In=manualIn||recBreaker(IB,Iz);
+  const I2=In?In*1.45:null;
+  const bc1=In?In>=IB:true, bc2=In?In<=Iz:true, bc3=I2?I2<=1.45*Iz:true;
+  const bOk=bc1&&bc2&&bc3;
+  const passed=curOk&&vdOk&&bOk;
+  return {section,Iz_t,Iz,IB,CF,Ct,Cg,dU,pct,maxVD,curOk,vdOk,bOk,passed,In,I2,bc1,bc2,bc3};
+}
+
+// ─── UI CONTROLS ──────────────────────────────────────────────────────────────
+function setMode(mode){
+  currentMode=mode;
+  g('btnRecommend').className='mode-btn'+(mode==='recommend'?' active':'');
+  g('btnCheck').className='mode-btn'+(mode==='check'?' active':'');
+  g('sectionField').style.display=mode==='check'?'block':'none';
+  g('calcBtn').textContent=mode==='recommend'?'🎯 חשב המלצת חתך':'🔍 בדוק חתך זה';
+  g('resultsCol').innerHTML='<div class="empty"><div class="empty-icon">'+(mode==='recommend'?'🎯':'🔍')+'</div><div style="font-weight:700;font-size:0.95rem;margin-bottom:6px">ממתין לחישוב</div><div style="font-size:0.82rem">מלא את הנתונים ולחץ חשב</div></div>';
+}
+function syncVoltage(){g('voltage').value=g('systemType').value==='THREE_PHASE'?400:230;updateIB();}
+function toggleBreaker(){g('breakerManual').style.display=g('autoBreaker').checked?'none':'block';}
+function updateIB(){
+  const P=parseFloat(g('power').value)||0,pf=parseFloat(g('pf').value)||0.9;
+  const eff=parseFloat(g('eff').value)||1,V=parseFloat(g('voltage').value)||400;
+  if(P>0&&pf>0&&eff>0&&V>0) g('ibDisplay').textContent=calcIB(P,pf,eff,V,g('systemType').value).toFixed(2)+' A';
+}
+
+// ─── MAIN CALC ────────────────────────────────────────────────────────────────
+function calculate(){
+  const mat=g('material').value, ins=g('insulation').value;
+  const len=parseFloat(g('length').value), method=g('method').value;
+  const ambT=parseFloat(g('ambientTemp').value), grp=parseInt(g('groupCount').value);
+  const P=parseFloat(g('power').value), pf=parseFloat(g('pf').value);
+  const eff=parseFloat(g('eff').value), V=parseFloat(g('voltage').value);
+  const sys=g('systemType').value, loadType=g('loadType').value;
+  const manualIn=g('autoBreaker').checked?null:parseFloat(g('breakerIn').value);
+
+  if(currentMode==='check'){
+    // Check a specific user-selected section
+    const section=parseFloat(g('manualSection').value);
+    if(mat==='ALUMINUM'&&section<10){
+      alert('אלומיניום אינו זמין בחתך מתחת ל-10mm²');return;
+    }
+    const r=calcForSection(section,mat,ins,len,method,ambT,grp,P,pf,eff,V,sys,loadType,manualIn);
+    if(!r){alert('אין נתוני קיבולת לשילוב זה');return;}
+    renderResults(r, mat, ins, method, false);
+  } else {
+    // Auto-recommend: iterate sections smallest to largest
+    let found=null;
+    for(const section of SECTIONS){
+      if(mat==='ALUMINUM'&&section<10) continue;
+      const r=calcForSection(section,mat,ins,len,method,ambT,grp,P,pf,eff,V,sys,loadType,manualIn);
+      if(!r) continue;
+      found=r;
+      if(r.passed) break;
+    }
+    if(!found){g('resultsCol').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><div>לא נמצאו נתונים לשילוב זה</div></div>';return;}
+    renderResults(found, mat, ins, method, true);
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderResults(r, mat, ins, method, isRecommend){
+  const f=(v,d=2)=>v!=null?v.toFixed(d):'—';
+  const badge=ok=>`<span class="badge ${ok?'pass':'fail'}">${ok?'✅ עובר':'❌ נכשל'}</span>`;
+  const checkRow=(label,left,right,ok)=>`<tr class="${ok?'check-pass':'check-fail'}"><td style="font-weight:600">${label}</td><td style="font-family:monospace;font-size:0.8rem;text-align:left">${left}</td><td style="font-family:monospace;font-size:0.8rem;text-align:left">${right}</td><td style="text-align:center">${ok?'✅':'❌'}</td></tr>`;
+  const loadLabels={POWER:'כוח',LIGHTING:'תאורה',MOTOR_START:'מנוע',SENSITIVE_EQUIPMENT:'ציוד רגיש'};
+  const modeLabel=isRecommend?'חתך מומלץ':'חתך שנבדק';
+
+  g('resultsCol').innerHTML=`
+    <div class="result-banner ${r.passed?'pass':'fail'}">
+      <div class="result-title ${r.passed?'pass':'fail'}">
+        ${r.passed?(isRecommend?'✅ נמצא חתך מתאים':'✅ החתך עובר את כל הבדיקות'):(isRecommend?'⚠️ לא נמצא חתך סטנדרטי מתאים':'❌ החתך אינו עומד בדרישות')}
+      </div>
+      <div class="result-pills">
+        <div class="pill">${modeLabel} <span style="color:${r.passed?'#3b82f6':'#ef4444'};font-weight:800;font-size:1.05rem">${r.section} mm²</span></div>
+        ${r.In?`<div class="pill">מבטח <span style="color:#f59e0b;font-weight:800">${r.In} A</span></div>`:''}
+        <div class="pill">${mat==='COPPER'?'נחושת':'אלומיניום'} · ${ins} · ${method}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="dot" style="background:#3b82f6"></div> עומסיות זרם</div>
+      <div class="card-body">
+        <table class="rtable">
+          <tr><td>זרם עיצוב IB</td><td>${f(r.IB)} A</td></tr>
+          <tr><td>קיבולת טבלה Iz_table</td><td>${r.Iz_t} A</td></tr>
+          <tr><td>מקדם טמפרטורה Ct</td><td>${f(r.Ct,3)}</td></tr>
+          <tr><td>מקדם קיבוץ Cg</td><td>${f(r.Cg,3)}</td></tr>
+          <tr><td>מקדם כולל CF</td><td>${f(r.CF,3)}</td></tr>
+          <tr class="highlight"><td>קיבולת מתוקנת Iz</td><td>${f(r.Iz)} A</td></tr>
+          <tr><td>ניצול</td><td>${f(r.IB/r.Iz*100,1)}%</td></tr>
+        </table>
+        ${badge(r.curOk)}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="dot" style="background:#10b981"></div> נפילת מתח</div>
+      <div class="card-body">
+        <table class="rtable">
+          <tr><td>נפילת מתח</td><td>${f(r.dU)} V</td></tr>
+          <tr class="highlight"><td>נפילה באחוזים</td><td>${f(r.pct)}%</td></tr>
+          <tr><td>מקסימום מותר (${loadLabels[document.getElementById('loadType').value]||''})</td><td>${r.maxVD}%</td></tr>
+        </table>
+        ${badge(r.vdOk)}
+      </div>
+    </div>
+
+    ${r.In?`
+    <div class="card">
+      <div class="card-header"><div class="dot" style="background:#f59e0b"></div> הגנת יתר-זרם — מבטח ${r.In}A (IEC 60364-4-43)</div>
+      <div class="card-body">
+        <table class="rtable" style="border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border);color:var(--muted);font-size:0.73rem">
+            <th style="text-align:right;padding:4px 8px">תנאי</th><th style="padding:4px 8px">ערך</th><th style="padding:4px 8px">גבול</th><th></th>
+          </tr></thead>
+          <tbody>
+            ${checkRow('IB ≤ In',`IB = ${f(r.IB)} A`,`In = ${r.In} A`,r.bc1)}
+            ${checkRow('In ≤ Iz',`In = ${r.In} A`,`Iz = ${f(r.Iz)} A`,r.bc2)}
+            ${checkRow('I₂ ≤ 1.45×Iz',`I₂ = ${f(r.I2)} A`,`${f(1.45*r.Iz)} A`,r.bc3)}
+          </tbody>
+        </table>
+        ${badge(r.bOk)}
+      </div>
+    </div>`:''}
+  `;
+}
+
+updateIB();
+</script>
+</body>
+</html>
