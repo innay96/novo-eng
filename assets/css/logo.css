@@ -1,0 +1,20 @@
+/**
+ * Logo mark — sizing + optional blend on dark bars (raster PNG with black matte).
+ * SVG in nav needs no .logo--blend-dark.
+ */
+.logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nav-logo .logo {
+  height: 70px;
+  width: 70px;
+}
+
+.footer-logo .logo,
+.site-footer .logo {
+  height: 70px;
+  width: 70px;
+}

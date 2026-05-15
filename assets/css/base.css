@@ -1,0 +1,29 @@
+/**
+ * Global reset and document defaults (RTL marketing + tools).
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Heebo', sans-serif;
+  direction: rtl;
+}
+
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body.page-calculator {
+  color: var(--text);
+  padding-bottom: 32px;
+}

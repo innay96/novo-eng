@@ -1,0 +1,123 @@
+/**
+ * Shared chrome — primary nav + mobile drawer (index + calculator).
+ */
+nav {
+  background: var(--dark);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.page-calculator nav {
+  z-index: 200;
+  margin-bottom: 24px;
+}
+
+.nav-logo a {
+  display: block;
+  line-height: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-links a {
+  color: var(--sand);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.85;
+  transition: opacity 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.nav-links a.nav-active {
+  color: var(--accent);
+  opacity: 1;
+  font-weight: 500;
+}
+
+.nav-cta {
+  background: var(--accent);
+  color: var(--text-on-accent) !important;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  font-size: 13px !important;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--sand);
+  border-radius: 2px;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--dark);
+  padding: 16px 24px 24px;
+  gap: 0;
+}
+
+.mobile-menu a {
+  color: var(--sand);
+  text-decoration: none;
+  font-size: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(227, 222, 215, 0.08);
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+  margin-top: 8px;
+  background: var(--accent);
+  color: var(--text-on-accent) !important;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 0 24px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}

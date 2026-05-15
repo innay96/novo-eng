@@ -1,0 +1,37 @@
+/**
+ * Design tokens — shared by marketing (index) and calculator.
+ * Load first; page bundles may override a small subset (see calculator.css).
+ */
+:root {
+  /* surfaces */
+  --bg: #e3ded7;
+  --bg-15: rgba(227, 222, 215, 0.15);
+  --sand: #e3ded7;
+  --sand-mid: #c8c0b5;
+  --dark: #2d4443;
+  --footer-bg: #1e2e2d;
+
+  /* typography */
+  --text-primary: #2d4443;
+  --text-secondary: #8ead7c;
+  --text: var(--text-primary);
+  --muted: #5a6d6b;
+
+  /* brand accent */
+  --green: #5abf8c;
+  --sage: #8ead7c;
+  --accent: #5abf8c;
+  --accent2: #4daa7d;
+  --text-on-green: #1a4d35;
+  --text-on-accent: #1a4d35;
+
+  /* semantic */
+  --red: #c0392b;
+  --amber: #c17f0a;
+
+  /* calculator UI */
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface2: rgba(227, 222, 215, 0.9);
+  --border: rgba(45, 68, 67, 0.14);
+  --radius: 10px;
+}
