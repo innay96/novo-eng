@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>נובו הנדסת חשמל | תכנון, פיקוח וניהול פרויקטים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#e3ded7;--bg-15:rgba(227,222,215,0.15);--text-primary:#2d4443;--text-secondary:#8ead7c;
+  --green:#5ABF8C;--sage:#8EAD7C;--dark:#2D4443;--sand:#E3DED7;--sand-mid:#C8C0B5;--text-on-green:#1a4d35;
+}
+body,html{font-family:'Heebo',sans-serif;direction:rtl;background:var(--bg);color:var(--text-primary);margin:0;padding:0;}
+.page{max-width:900px;margin:0 auto;padding:0;}
+nav{background:var(--dark);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;}
+.nav-logo img{height:38px;display:block;}
+.nav-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.nav-links a{color:var(--sand);text-decoration:none;font-size:14px;font-weight:400;opacity:.85;transition:opacity .2s,color .2s;cursor:pointer;}
+.nav-links a:hover{opacity:1;color:var(--green);}
+.nav-links a.nav-active{color:var(--green);opacity:1;font-weight:500;}
+.nav-cta{background:var(--green);color:var(--text-on-green) !important;padding:8px 16px;border-radius:6px;font-weight:500 !important;opacity:1 !important;font-size:13px !important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--sand);border-radius:2px;}
+.mobile-menu{display:none;flex-direction:column;background:var(--dark);padding:16px 24px 24px;gap:0;}
+.mobile-menu a{color:var(--sand);text-decoration:none;font-size:16px;padding:14px 0;border-bottom:1px solid rgba(227,222,215,.08);}
+.mobile-menu a:last-child{border-bottom:none;margin-top:8px;background:var(--green);color:var(--text-on-green) !important;text-align:center;padding:12px;border-radius:8px;}
+.mobile-menu.open{display:flex;}
+.hero{background:var(--dark);padding:72px 60px 64px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;left:-60px;width:320px;height:320px;border-radius:50%;border:60px solid rgba(90,191,140,.07);}
+.hero::after{content:'';position:absolute;bottom:-80px;right:-40px;width:260px;height:260px;border-radius:50%;border:50px solid rgba(142,173,124,.08);}
+.hero-tag{display:inline-block;background:rgba(90,191,140,.15);color:var(--green);font-size:12px;font-weight:500;letter-spacing:1.5px;padding:5px 14px;border-radius:20px;margin-bottom:22px;border:1px solid rgba(90,191,140,.25);}
+.hero h1{font-family:'Rubik',sans-serif;font-size:52px;font-weight:700;color:var(--sand);line-height:1.15;margin-bottom:16px;position:relative;}
+.hero h1 span{color:var(--green);}
+.hero-sub{font-size:17px;color:var(--sand-mid);font-weight:300;line-height:1.7;max-width:520px;margin-bottom:40px;position:relative;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;position:relative;}
+.btn-primary{background:var(--green);color:var(--text-on-green);border:none;padding:14px 28px;border-radius:8px;font-size:15px;font-weight:600;font-family:'Heebo',sans-serif;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:#4daa7d;}
+.btn-outline{background:transparent;color:var(--sand);border:1px solid rgba(227,222,215,.35);padding:14px 28px;border-radius:8px;font-size:15px;font-weight:400;font-family:'Heebo',sans-serif;cursor:pointer;text-decoration:none;display:inline-block;}
+.btn-outline:hover{border-color:var(--sage);color:var(--sage);}
+.hero-stats{display:flex;gap:40px;margin-top:56px;padding-top:40px;border-top:1px solid rgba(227,222,215,.12);position:relative;}
+.stat-item{text-align:right;}
+.stat-num{font-size:32px;font-weight:700;color:var(--green);font-family:'Rubik',sans-serif;line-height:1;}
+.stat-label{font-size:12px;color:var(--sand-mid);margin-top:4px;font-weight:300;}
+section{padding:64px 60px;}
+.section-tag{font-size:11px;letter-spacing:2px;color:var(--text-secondary);font-weight:500;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-family:'Rubik',sans-serif;font-size:32px;font-weight:700;color:var(--text-primary);margin-bottom:10px;line-height:1.25;}
+.section-title span{color:var(--text-secondary);}
+.section-desc{font-size:16px;color:var(--text-primary);opacity:.7;line-height:1.7;max-width:560px;margin-bottom:40px;}
+.services-bg,.about-bg,.values-bg{background:var(--bg-15);}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.service-card{background:rgba(227,222,215,0.15);border:1px solid rgba(45,68,67,.12);border-radius:12px;padding:28px 24px;transition:transform .2s;}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(45,68,67,.08);}
+.service-icon{width:46px;height:46px;background:rgba(45,68,67,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px;color:var(--text-primary);}
+.service-card h3{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px;font-family:'Rubik',sans-serif;}
+.service-card p{font-size:13px;color:var(--text-primary);opacity:.65;line-height:1.65;}
+.service-card a.tool-cta{display:inline-flex;margin-top:14px;font-size:13px;font-weight:600;color:var(--green);text-decoration:none;align-items:center;gap:6px;}
+.service-card a.tool-cta:hover{text-decoration:underline;}
+.domains-bg{background:var(--dark);}
+.domains-bg .section-title{color:var(--sand);}
+.domains-bg .section-desc{color:var(--sand-mid);opacity:1;}
+.domains-bg .section-tag{color:var(--sage);}
+.domains-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.domain-item{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border:1px solid rgba(142,173,124,.2);border-radius:10px;padding:18px 20px;transition:background .2s;}
+.domain-item:hover{background:rgba(90,191,140,.1);}
+.domain-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.domain-text{font-size:14px;color:var(--sand);font-weight:400;}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-visual{background:var(--dark);border-radius:16px;padding:40px;position:relative;overflow:hidden;}
+.about-visual::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(90,191,140,.12);}
+.about-initial{width:72px;height:72px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--text-on-green);margin-bottom:20px;font-family:'Rubik',sans-serif;}
+.about-visual h3{font-family:'Rubik',sans-serif;font-size:22px;font-weight:700;color:var(--sand);margin-bottom:6px;}
+.about-visual .sub{font-size:13px;color:var(--sage);margin-bottom:20px;}
+.cred-line{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(227,222,215,.1);font-size:13px;color:var(--sand-mid);}
+.cred-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;}
+.about-quote{background:rgba(45,68,67,.06);border-right:3px solid var(--text-secondary);padding:16px 20px;border-radius:0 8px 8px 0;font-size:15px;color:var(--text-primary);line-height:1.7;font-style:italic;margin-top:24px;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.value-card{text-align:center;padding:32px 20px;background:rgba(227,222,215,0.15);border-radius:12px;}
+.value-num{font-family:'Rubik',sans-serif;font-size:48px;font-weight:900;color:rgba(142,173,124,.35);line-height:1;margin-bottom:8px;}
+.value-card h3{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px;}
+.value-card p{font-size:13px;color:var(--text-primary);opacity:.65;line-height:1.65;}
+.contact-bg{background:var(--dark);}
+.contact-bg .section-title{color:var(--sand);}
+.contact-bg .section-tag{color:var(--sage);}
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;}
+.contact-info p{font-size:16px;color:var(--sand-mid);line-height:1.75;margin-bottom:32px;}
+.contact-links{display:flex;flex-direction:column;gap:14px;}
+.contact-link{display:flex;align-items:center;gap:12px;color:var(--sand);font-size:14px;text-decoration:none;padding:12px 16px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(142,173,124,.2);transition:background .2s;}
+.contact-link:hover{background:rgba(90,191,140,.12);}
+.contact-link-icon{width:32px;height:32px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-on-green);font-size:18px;flex-shrink:0;}
+.contact-form{display:flex;flex-direction:column;gap:14px;}
+.contact-form input,.contact-form textarea{background:rgba(255,255,255,.07);border:1px solid rgba(142,173,124,.25);border-radius:8px;padding:13px 16px;font-size:14px;color:var(--sand);font-family:'Heebo',sans-serif;direction:rtl;width:100%;outline:none;}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--green);}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(227,222,215,.4);}
+.contact-form textarea{resize:vertical;min-height:100px;}
+.contact-form button{background:var(--green);color:var(--text-on-green);border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:600;font-family:'Heebo',sans-serif;cursor:pointer;transition:background .2s;}
+.contact-form button:hover{background:#4daa7d;}
+footer{background:#1e2e2d;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+footer p{font-size:12px;color:var(--sand-mid);}
+.footer-logo img{height:28px;}
+
+@media(max-width:768px){
+  nav{padding:0 24px;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:52px 24px 48px;}
+  .hero h1{font-size:38px;}
+  .hero-sub{font-size:15px;}
+  .hero-stats{gap:28px;}
+  .stat-num{font-size:26px;}
+  section{padding:48px 24px;}
+  .section-title{font-size:26px;}
+  .services-grid{grid-template-columns:1fr 1fr;}
+  .domains-grid{grid-template-columns:1fr 1fr;}
+  .about-inner{grid-template-columns:1fr;gap:32px;}
+  .values-grid{grid-template-columns:1fr 1fr;}
+  .contact-inner{grid-template-columns:1fr;gap:36px;}
+  footer{padding:20px 24px;}
+}
+@media(max-width:480px){
+  .hero{padding:40px 20px 40px;}
+  .hero-tag{font-size:11px;letter-spacing:1px;}
+  .hero h1{font-size:30px;}
+  .hero-sub{font-size:14px;}
+  .hero-actions{flex-direction:column;}
+  .btn-primary,.btn-outline{width:100%;text-align:center;padding:14px 20px;}
+  .hero-stats{gap:20px;}
+  .stat-num{font-size:22px;}
+  section{padding:40px 20px;}
+  .section-title{font-size:22px;}
+  .services-grid{grid-template-columns:1fr;}
+  .domains-grid{grid-template-columns:1fr;}
+  .values-grid{grid-template-columns:1fr;}
+  .about-visual{padding:28px 24px;}
+  .contact-inner{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <a href="homepage.html" style="display:block;line-height:0;"><img src="assets/logo.png" alt="נובו הנדסת חשמל" /></a>
+  </div>
+  <div class="nav-links">
+    <a href="cable-calculator.html">מחשבון חתך כבלים</a>
+    <a href="#services">שירותים</a>
+    <a href="#domains">תחומי עיסוק</a>
+    <a href="#about">אודות</a>
+    <a href="#contact" class="nav-cta">צור קשר</a>
+  </div>
+  <div class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="תפריט">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="cable-calculator.html" onclick="document.getElementById('mobileMenu').classList.remove('open')">מחשבון חתך כבלים</a>
+  <a href="#services" onclick="document.getElementById('mobileMenu').classList.remove('open')">שירותים</a>
+  <a href="#domains" onclick="document.getElementById('mobileMenu').classList.remove('open')">תחומי עיסוק</a>
+  <a href="#about" onclick="document.getElementById('mobileMenu').classList.remove('open')">אודות</a>
+  <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">צור קשר</a>
+</div>
+
+<div class="hero">
+  <div class="page">
+    <div class="hero-tag">הנדסת חשמל, בקרה ומכשור: תכנון, פיקוח וניהול פרוייקטים</div>
+    <h1>פתרון שלם<br><span>משולחן השרטוטים לשטח</span></h1>
+    <p class="hero-sub">שילוב של ידע תכנוני מעמיק עם ניסיון מעשי בשטח — מענה כולל המתורגם להוזלת עלויות וחסכון בזמן, בארץ ובעולם.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">בואו נדבר על הפרויקט שלכם ↗</a>
+      <a href="cable-calculator.html" class="btn-outline">מחשבון חתך כבלים לפי SI 900</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">שנות ניסיון בתעשייה</div></div>
+      <div class="stat-item"><div class="stat-num">🇮🇱 & 🌍</div><div class="stat-label">פרויקטים בארץ ובעולם</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="services-bg" id="services">
+  <div class="page">
+    <div class="section-tag">מה אנחנו מציעים</div>
+    <h2 class="section-title">שירותי הנדסת חשמל <span>מקצועיים</span></h2>
+    <p class="section-desc">ליווי מקצועי צמוד בכל שלבי הפרויקט — מהתכנון הראשוני ועד להשלמה בשטח.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">✏️</div>
+        <h3>תכנון חשמלי</h3>
+        <p>תכנון מקיף למתקנים תעשייתיים — מתח גבוה, מתח נמוך, בקרה ומכשור, על פי תקנים ישראליים ובינלאומיים.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔍</div>
+        <h3>פיקוח הנדסי</h3>
+        <p>פיקוח צמוד בזמן ביצוע כדי להבטיח עמידה בתכנון, בתקנים ובלוחות זמנים — ומניעת טעויות יקרות.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📋</div>
+        <h3>ניהול פרויקטים</h3>
+        <p>ניהול מקצה לקצה: תיאום בין גורמים, בקרת עלויות, לוחות זמנים והבטחת אספקת מוצר מעולה.</p>
+      </div>
+    </div>
+    <div class="services-grid" style="margin-top:18px;grid-template-columns:1fr;">
+      <div class="service-card" style="max-width:100%;">
+        <div class="service-icon">⚡</div>
+        <h3>כלים מקצועיים</h3>
+        <p>מחשבון חתך כבלים לפי SI 900 / IEC 60364 — נחושת ואלומיניום, PVC ו-XLPE, לווי עומס ונפילת מתח.</p>
+        <a class="tool-cta" href="cable-calculator.html">פתח את המחשבון ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="domains-bg" id="domains">
+  <div class="page">
+    <div class="section-tag">תחומי עיסוק</div>
+    <h2 class="section-title" style="color:var(--sand);">תעשיות ומתקנים <span style="color:var(--green)">שבהם אנחנו פועלים</span></h2>
+    <p class="section-desc">ניסיון עשיר במגוון רחב של ענפים ומתקנים מורכבים — בתנאי שטח מאתגרים.</p>
+    <div class="domains-grid">
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">מפעלים וקווי ייצור תעשייתיים</span></div>
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">מתקני ייצור אנרגיה ותחמ"שים</span></div>
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">מט"שים — מתקני טיהור שפכים</span></div>
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">מתקנים פוטו-וולטאים (סולאר)</span></div>
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">אזורים נפיצים, חדרים נקיים, סביבה קורוזיבית</span></div>
+      <div class="domain-item"><div class="domain-dot"></div><span class="domain-text">אינטגרציה של מכונות ייצור</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="about-bg" id="about">
+  <div class="page">
+    <div class="about-inner">
+      <div class="about-visual">
+        <div class="about-initial">דנ</div>
+        <h3>דימה נובו</h3>
+        <div class="sub">מהנדס חשמל ואלקטרוניקה · מייסד</div>
+        <div class="cred-line"><div class="cred-dot"></div>בוגר אוניברסיטת בן גוריון</div>
+        <div class="cred-line"><div class="cred-dot"></div>רישיון חשמלאי-מהנדס</div>
+        <div class="cred-line"><div class="cred-dot"></div>ניסיון בתעשייה ובהיי-טק</div>
+        <div class="cred-line" style="border:none;"><div class="cred-dot"></div>פרויקטים בישראל ובחו"ל</div>
+      </div>
+      <div class="about-content">
+        <div class="section-tag">אודות</div>
+        <h2 class="section-title">הנדסה שמחברת<br><span>בין תיאוריה לשטח</span></h2>
+        <p class="section-desc" style="margin-bottom:0;">חיבור בין דיסציפלינות הנדסיות שונות, ניהול יעיל וכלים טכנולוגיים מתקדמים — הם המפתח לפתרון האתגרים המורכבים ביותר ולאספקת מוצר מעולה.</p>
+        <div class="about-quote">"יצירת ערך מוסף ללקוח ניצב בראש סדר העדיפויות שלנו — ביצוע יעיל ואיכותי, ליווי צמוד לאורך כל שלבי הפרויקט, תוך שאיפה מתמדת למצוינות."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="values-bg">
+  <div class="page">
+    <div class="section-tag" style="text-align:center;">הגישה שלנו</div>
+    <h2 class="section-title" style="text-align:center;margin-bottom:8px;">למה לבחור ב<span>נובו הנדסת חשמל</span>?</h2>
+    <p class="section-desc" style="margin:0 auto 40px;text-align:center;">שלושה עקרונות שמנחים כל פרויקט שאנחנו מובילים.</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <h3>ידע מעמיק</h3>
+        <p>הבנה הנדסית אמיתית של כל פרויקט — לא שבלונות, אלא פתרון מותאם לצרכים הספציפיים שלכם.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <h3>ליווי צמוד</h3>
+        <p>נוכחות לאורך כל שלב — מהתכנון, דרך הפיקוח ועד לאספקה — כדי שלא תהיו לבד בפרויקט.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <h3>חסכון אמיתי</h3>
+        <p>הוזלת עלויות בעקבות תכנון נכון, מניעת שגיאות בשטח ועמידה בלוחות זמנים.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-bg" id="contact">
+  <div class="page">
+    <div class="contact-inner">
+      <div class="contact-info">
+        <div class="section-tag">יצירת קשר</div>
+        <h2 class="section-title" style="color:var(--sand);">בואו נתפור את המענה<br><span style="color:var(--sage)">המדויק לפרויקט שלכם</span></h2>
+        <p>מזמינים אתכם לשיחת היכרות — נבין את הצרכים שלכם ונציע את הגישה הנכונה לפרויקט.</p>
+        <div class="contact-links">
+          <a href="mailto:DIMA@NOVO-ENG.COM" class="contact-link">
+            <div class="contact-link-icon">✉</div>
+            DIMA@NOVO-ENG.COM
+          </a>
+          <a href="tel:+972545501711" class="contact-link">
+            <div class="contact-link-icon">📞</div>
+            054-550-1711
+          </a>
+          <a href="https://www.linkedin.com/in/dima-novo-44483524/" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <div class="contact-link-icon">in</div>
+            LinkedIn — Dima Novo
+          </a>
+        </div>
+      </div>
+      <div class="contact-form">
+        <input type="text" placeholder="שם מלא" />
+        <input type="text" placeholder="טלפון או אימייל" />
+        <input type="text" placeholder="תיאור קצר של הפרויקט" />
+        <textarea placeholder="פרטים נוספים (אופציונלי)..."></textarea>
+        <button type="button">שלח פנייה ↗</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 נובו הנדסת חשמל · כל הזכויות שמורות</p>
+  <div class="footer-logo"><img src="assets/logo.png" alt="נובו" /></div>
+</footer>
+
+</body>
+</html>
