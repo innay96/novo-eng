@@ -11,7 +11,10 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#e3ded7;--bg-15:rgba(227,222,215,0.15);--text-primary:#2d4443;--text-secondary:#8ead7c;
-  --green:#5ABF8C;--sage:#8EAD7C;--dark:#2D4443;--sand:#E3DED7;--sand-mid:#C8C0B5;--text-on-green:#1a4d35;
+  --green:#5ABF8C;--sage:#8EAD7C;
+  /* Near-black chrome matches NOVO logo raster (opaque #000) so no “floating box” on the bar */
+  --dark:#0a0a0a;
+  --sand:#E3DED7;--sand-mid:#C8C0B5;--text-on-green:#1a4d35;
 }
 body,html{font-family:'Heebo',sans-serif;direction:rtl;background:var(--bg);color:var(--text-primary);margin:0;padding:0;}
 .page{max-width:900px;margin:0 auto;padding:0;}
@@ -97,7 +100,7 @@ section{padding:64px 60px;}
 .contact-form textarea{resize:vertical;min-height:100px;}
 .contact-form button{background:var(--green);color:var(--text-on-green);border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:600;font-family:'Heebo',sans-serif;cursor:pointer;transition:background .2s;}
 .contact-form button:hover{background:#4daa7d;}
-footer{background:#1e2e2d;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+footer{background:var(--dark);padding:24px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 footer p{font-size:12px;color:var(--sand-mid);}
 .footer-logo img{height:28px;}
 
