@@ -1,0 +1,21 @@
+/**
+ * Site logo (raster PNG).
+ *
+ * True transparency only exists if the PNG has an alpha channel. CSS cannot
+ * remove an embedded solid-black background from the file itself.
+ *
+ * On dark bars (nav, dark footer), .logo--blend-dark uses screen blending so
+ * pure black (#000) pixels pick up the bar color and the “black box” edge
+ * disappears. Do not use .logo--blend-dark on light backgrounds (e.g. sand).
+ */
+
+.logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: transparent;
+}
+
+.logo--blend-dark {
+  mix-blend-mode: screen;
+}
